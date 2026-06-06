@@ -15,7 +15,7 @@ on:
 # ── Environment Variables ──────────────────────────────────────────
 # Available to all jobs in this workflow
 env:
-  GO_VERSION: '1.23'
+  GO_VERSION: '1.24'
   APP_NAME: go-devops-app
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
