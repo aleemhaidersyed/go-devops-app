@@ -1,16 +1,26 @@
 global:
-  scrape_interval: 15s      # Collect metrics every 15 seconds
-  evaluation_interval: 15s  # Evaluate alert rules every 15 seconds
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Alerting rules file
+rule_files:
+  - "alert_rules.yml"
 
 scrape_configs:
-  # Prometheus scrapes itself (so you can monitor Prometheus!)
+  # Prometheus scrapes itself
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
-  # Scrape our Go app's /metrics endpoint
-  # 'app' is the Docker Compose service name — Docker DNS resolves it
-  - job_name: 'go-devops-app'
+  # Scrape local app (for local dev)
+  - job_name: 'go-devops-app-local'
     static_configs:
       - targets: ['app:8080']
     metrics_path: '/metrics'
+
+  # Scrape the LIVE AWS app through ALB
+  - job_name: 'go-devops-app-aws'
+    static_configs:
+      - targets: ['go-devops-app-alb-244164610.us-east-1.elb.amazonaws.com']
+    metrics_path: '/metrics'
+    scheme: http
