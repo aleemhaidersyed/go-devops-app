@@ -4,14 +4,14 @@ run:
 
 linters:
   enable:
-    - govet        # Go's built-in analyzer (detects bugs)
-    - errcheck     # Checks that errors are handled
-    - staticcheck  # Advanced static analysis
-    - gosimple     # Suggests code simplifications
-    - ineffassign  # Detects useless variable assignments
-    - unused       # Finds unused code
-    - gofmt        # Enforces Go formatting standard
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - ineffassign
+    - unused
+    - gofmt
 
 linters-settings:
   errcheck:
-    check-type-assertions: false  # Don't flag unchecked type assertions
+    check-type-assertions: false
