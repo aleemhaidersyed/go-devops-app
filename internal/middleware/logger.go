@@ -37,11 +37,11 @@ func Logger(next http.Handler) http.Handler {
 
 		// After handler finishes, log everything
 		log.Info().
-			Str("method", r.Method).           // GET, POST, DELETE etc.
-			Str("path", r.URL.Path).           // /health, /tasks etc.
-			Int("status", wrapped.statusCode). // 200, 201, 404 etc.
-			Dur("duration", time.Since(start)).// How long it took
-			Str("ip", r.RemoteAddr).           // Caller's IP address
+			Str("method", r.Method).            // GET, POST, DELETE etc.
+			Str("path", r.URL.Path).            // /health, /tasks etc.
+			Int("status", wrapped.statusCode).  // 200, 201, 404 etc.
+			Dur("duration", time.Since(start)). // How long it took
+			Str("ip", r.RemoteAddr).            // Caller's IP address
 			Msg("request completed")
 	})
 }

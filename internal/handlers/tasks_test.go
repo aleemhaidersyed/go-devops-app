@@ -28,7 +28,9 @@ func TestGetTasksEmpty(t *testing.T) {
 
 	// Assert: body must be empty array
 	var tasks []Task
-	json.NewDecoder(rr.Body).Decode(&tasks)
+	if err := json.NewDecoder(rr.Body).Decode(&tasks); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 	if len(tasks) != 0 {
 		t.Errorf("expected 0 tasks, got %d", len(tasks))
 	}
@@ -52,7 +54,9 @@ func TestCreateTask(t *testing.T) {
 
 	// Decode and verify fields
 	var task Task
-	json.NewDecoder(rr.Body).Decode(&task)
+	if err := json.NewDecoder(rr.Body).Decode(&task); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
 
 	if task.Title != "Buy groceries" {
 		t.Errorf("expected title 'Buy groceries', got '%s'", task.Title)
