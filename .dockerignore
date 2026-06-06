@@ -3,7 +3,8 @@
 .gitignore
 
 # Compiled binary — we recompile inside Docker
-server
+# Leading / means ONLY match 'server' at root level, not cmd/server/
+/server
 
 # Terraform state — sensitive, never in container
 terraform/

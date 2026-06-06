@@ -32,7 +32,7 @@ test-coverage: ## Run tests and show coverage percentage
 	$(GO) tool cover -func=coverage.out
 
 lint: ## Run golangci-lint
-	golangci-lint run ./...
+	golangci-lint run ./... --concurrency=1
 
 fmt: ## Format all Go code
 	$(GO) fmt ./...

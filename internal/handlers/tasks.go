@@ -38,7 +38,10 @@ func (s *TaskStore) GetTasks(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(s.tasks)
+	if err := json.NewEncoder(w).Encode(s.tasks); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 // CreateTask handles POST /tasks — creates a new task from JSON body
@@ -71,7 +74,10 @@ func (s *TaskStore) CreateTask(w http.ResponseWriter, r *http.Request) {
 	// Respond with 201 Created and the new task
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(task)
+	if err := json.NewEncoder(w).Encode(task); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 // DeleteTask handles DELETE /tasks/{id} — removes a task by ID

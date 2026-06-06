@@ -2,7 +2,7 @@
 # STAGE 1: builder
 # Use the official Go image — it has everything needed to compile
 # ════════════════════════════════════════════════════════════════
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # Why alpine? It's a minimal Linux (5MB vs 200MB for full Ubuntu)
 # The builder stage is temporary — it won't be in the final image

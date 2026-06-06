@@ -30,5 +30,9 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// Encode the response struct as JSON and write it to the response body
-	json.NewEncoder(w).Encode(response)
+	// Encode the response struct as JSON and write it to the response body
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
