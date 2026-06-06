@@ -1,0 +1,32 @@
+# ── Compiled Binary ──────────────────────────────────────────────
+server
+*.exe
+*.out
+
+# ── Go test artifacts ────────────────────────────────────────────
+coverage.out
+
+# ── Environment & Secrets ────────────────────────────────────────
+# NEVER commit secrets, API keys, or .env files
+.env
+.env.*
+*.pem
+*.key
+
+# ── Terraform ────────────────────────────────────────────────────
+# Terraform creates these — they contain sensitive state data
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# ── OS Files ─────────────────────────────────────────────────────
+.DS_Store        # macOS
+Thumbs.db        # Windows
+desktop.ini      # Windows
+
+# ── IDE Files ────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
