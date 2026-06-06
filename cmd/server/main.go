@@ -30,9 +30,9 @@ func main() {
 
 	// ── Register Global Middleware ────────────────────────────────
 	// These run for EVERY request, in order
-	r.Use(chimiddleware.RequestID)   // Assigns a unique ID to every request
-	r.Use(chimiddleware.Recoverer)   // If a handler panics, recover gracefully (don't crash)
-	r.Use(middleware.Logger)         // Our custom request logger
+	r.Use(chimiddleware.RequestID) // Assigns a unique ID to every request
+	r.Use(chimiddleware.Recoverer) // If a handler panics, recover gracefully (don't crash)
+	r.Use(middleware.Logger)       // Our custom request logger
 
 	// ── Create Shared State ───────────────────────────────────────
 	// TaskStore holds all tasks in memory — shared across all requests
