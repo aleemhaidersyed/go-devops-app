@@ -1,5 +1,6 @@
 # ── Compiled Binary ──────────────────────────────────────────────
-server
+# Leading / = only ignore 'server' at root level, NOT cmd/server/
+/server
 *.exe
 *.out
 
