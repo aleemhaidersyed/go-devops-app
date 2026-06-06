@@ -1,0 +1,33 @@
+groups:
+  - name: go-devops-app
+    rules:
+
+      # Alert if app is down (no metrics received for 1 minute)
+      - alert: AppDown
+        expr: up{job="go-devops-app-aws"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "go-devops-app is DOWN on AWS"
+          description: "The application has been unreachable for more than 1 minute."
+
+      # Alert if Go GC is pausing too long (memory pressure)
+      - alert: HighGCPause
+        expr: go_gc_duration_seconds{quantile="0.99"} > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High GC pause time detected"
+          description: "99th percentile GC pause is {{ $value }}s (threshold: 0.1s)"
+
+      # Alert if too many goroutines (possible goroutine leak)
+      - alert: TooManyGoroutines
+        expr: go_goroutines > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Unusually high goroutine count"
+          description: "{{ $value }} goroutines running (threshold: 100)"

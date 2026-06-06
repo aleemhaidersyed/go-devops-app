@@ -1,0 +1,72 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": {"list": []},
+  "editable": true,
+  "graphTooltip": 0,
+  "id": null,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {
+            "steps": [
+              {"color": "red", "value": 0},
+              {"color": "green", "value": 1}
+            ]
+          },
+          "mappings": [
+            {"options": {"0": {"color": "red", "text": "DOWN"}}, "type": "value"},
+            {"options": {"1": {"color": "green", "text": "UP"}}, "type": "value"}
+          ]
+        }
+      },
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"]}},
+      "title": "AWS App Status",
+      "type": "stat",
+      "targets": [{"expr": "up{job=\"go-devops-app-aws\"}", "legendFormat": "AWS"}]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "id": 2,
+      "title": "Goroutines",
+      "type": "timeseries",
+      "targets": [{"expr": "go_goroutines{job=\"go-devops-app-aws\"}", "legendFormat": "goroutines"}]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "id": 3,
+      "title": "Memory Allocated (bytes)",
+      "type": "timeseries",
+      "targets": [{"expr": "go_memstats_alloc_bytes{job=\"go-devops-app-aws\"}", "legendFormat": "alloc"}]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+      "id": 4,
+      "title": "GC Duration (99th percentile)",
+      "type": "timeseries",
+      "targets": [{"expr": "go_gc_duration_seconds{quantile=\"0.99\",job=\"go-devops-app-aws\"}", "legendFormat": "p99 GC"}]
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+      "id": 5,
+      "title": "Open File Descriptors",
+      "type": "timeseries",
+      "targets": [{"expr": "process_open_fds{job=\"go-devops-app-aws\"}", "legendFormat": "open fds"}]
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 36,
+  "tags": ["go", "aws", "devops"],
+  "title": "go-devops-app — AWS Production",
+  "uid": "go-devops-aws-001",
+  "version": 1
+}

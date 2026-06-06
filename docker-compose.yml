@@ -1,25 +1,19 @@
-# docker-compose.yml — defines our local development environment
-
 services:
 
   # ── Our Go Application ────────────────────────────────────────
   app:
-    # Build from our Dockerfile in the current directory
     build:
       context: .
       dockerfile: Dockerfile
     container_name: devops-app
     ports:
-      - "8080:8080"     # host:container
+      - "8080:8080"
     environment:
       - PORT=8080
-    # Restart automatically if the container crashes
     restart: unless-stopped
-    # Don't start until the db is healthy
     depends_on:
       db:
         condition: service_healthy
-    # Connect to our custom network
     networks:
       - devops-network
     healthcheck:
@@ -29,10 +23,8 @@ services:
       retries: 3
 
   # ── PostgreSQL Database ───────────────────────────────────────
-  # We'll connect the app to this in Phase 6 (AWS RDS)
-  # For now it runs locally so you understand the full stack
   db:
-    image: postgres:16-alpine    # Official Postgres image, alpine variant
+    image: postgres:16-alpine
     container_name: devops-db
     environment:
       POSTGRES_USER: devops
@@ -40,35 +32,31 @@ services:
       POSTGRES_DB: tasksdb
     ports:
       - "5432:5432"
-    # Persist data even when container is removed
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - devops-network
     healthcheck:
-      # pg_isready = postgres built-in tool to check if DB is accepting connections
       test: ["CMD-SHELL", "pg_isready -U devops -d tasksdb"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   # ── Prometheus ────────────────────────────────────────────────
-  # Scrapes /metrics from our app every 15 seconds
   prometheus:
     image: prom/prometheus:latest
     container_name: devops-prometheus
     ports:
       - "9090:9090"
     volumes:
-      # Mount our config file into the container
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/alert_rules.yml:/etc/prometheus/alert_rules.yml
     networks:
       - devops-network
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   # ── Grafana ───────────────────────────────────────────────────
-  # Visualizes metrics from Prometheus with dashboards
   grafana:
     image: grafana/grafana:latest
     container_name: devops-grafana
@@ -76,22 +64,21 @@ services:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     networks:
       - devops-network
     depends_on:
       - prometheus
 
-# ── Named Volumes ─────────────────────────────────────────────
-# Docker manages these — data persists between container restarts
 volumes:
   postgres_data:
   grafana_data:
 
-# ── Custom Network ────────────────────────────────────────────
-# All containers on this network can reach each other by name
-# e.g. the app connects to the DB at hostname "db" port 5432
 networks:
   devops-network:
     driver: bridge
