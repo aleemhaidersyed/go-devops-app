@@ -1,0 +1,30 @@
+# Git history — not needed in container
+.git/
+.gitignore
+
+# Compiled binary — we recompile inside Docker
+server
+
+# Terraform state — sensitive, never in container
+terraform/
+*.tfstate
+*.tfstate.backup
+
+# Test artifacts
+coverage.out
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files — NEVER in container
+.env
+.env.*
